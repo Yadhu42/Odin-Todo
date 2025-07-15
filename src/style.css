@@ -1,0 +1,958 @@
+:root {
+    box-sizing: border-box;
+}
+
+:root.light{
+    --mainBgColor: #F1F6F9;
+    --sideNavBg:#B6BBC4;
+    --headerBg: #146C94;
+    --mainBgImg: url("https://www.transparenttextures.com/patterns/squared-metal.png");
+    --projBg: #B3C8CF;
+    --projFg: #89A8B2;
+    --textItems: black;
+    --hoverTxt: white;
+    --hoverPlus:rgba(20, 107, 148, 0.707);
+    --bShadow:2px 1px 4px rgb(69, 67, 67);
+    --bShadowProj:3px 1px 5px rgb(69, 67, 67);
+    --hoverNavTxt: white;
+    --navShadow: 3px 1px 5px rgb(69, 67, 67);
+    --projFolder: #d1d8be;
+    --projCircle: orange;
+    --projPlus:white;
+    --projPlusBg: orange;
+}
+
+:root.dark{
+    --mainBgColor: black;
+    --sideNavBg:#000000;
+    --headerBg: #52357B;
+    --mainBgImg: url("https://www.transparenttextures.com/patterns/subtle-dots.png");
+    --projBg: #512B81;
+    --projFg: #35155D;
+    --textItems: white;
+    --hoverTxt:Black;
+    --hoverPlus: rgba(82, 53, 123, 0.705);
+    --bShadow: inset 2px 1px 4px rgb(165, 161, 161),inset -2px -1px 4px rgb(165, 161, 161);
+    --bShadowProj: inset 0.5px 1px 5px rgb(165, 161, 161),inset -0.5px -3px 5px rgb(165, 161, 161);
+    --hoverNavTxt: rgb(130, 130, 130);
+    --navShadow: inset -3px -1px 5px rgb(135, 134, 134);
+    --projFolder:#512B81;
+    --projCircle: #4A9782;
+    --projPlus:orange;
+    --projPlusBg: black;
+}
+
+body, html{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.layoutWrapper{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sideNav{
+    min-height: 100vh;
+    padding: 20px;
+    width: 300px;
+    background-color:var(--sideNavBg);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    overflow-x: hidden;
+    transform: scaleX(0);
+    transition: none;
+    transform-origin: top left;
+    will-change: transform;
+    box-shadow: var(--navShadow);
+}
+
+.sideNav.ready{
+    transition: 0.5s ease-out;
+}
+
+.sidePanel{
+    display: grid;
+    grid-template-rows: auto;
+    gap: 50px;
+}
+
+.sidePanelDiv{
+    display: grid;
+    grid-auto-rows: auto;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--textItems);
+    border-radius: 15px;
+    gap: 25px;
+    padding: 15px;
+}
+
+.todayDiv,.allNoteDiv,.upcomingDiv,.overDueDiv,.existingProj1,.existingProj2{
+    cursor: pointer;
+    width: 150px;
+}
+
+.sidePanelTxt{
+    margin: 0;
+    font-family: "Unbounded", sans-serif;
+    font-size: 24px;
+    transition: ease 0.2s;
+    will-change: transform;
+    color: var(--textItems);
+}
+
+.sidePanelTxt:hover{
+    color: var(--hoverNavTxt);
+    transform: scale(110%);
+}
+
+.sidePanelProjectDiv{
+    display: grid;
+    grid-auto-rows: auto;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--textItems);
+    border-radius: 15px;
+    gap: 10px;
+    padding: 15px;
+}
+
+.sidePanelTitle{
+    font-family: "Unbounded", sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    color: var(--textItems);
+}
+
+.logHero{
+    margin: 0;
+}
+
+.logHeroDiv{
+    justify-content: center;
+}
+
+.existingProj{
+    width: 150px;
+    display: flex;
+    cursor: pointer;
+}
+
+#addNewProject{
+    display: flex;
+    justify-content: center;
+}
+
+.addProjectPlus{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 30px;
+    background-color: var(--projPlusBg);
+    border-radius: 10px;
+    border: 3px solid var(--textItems);
+    transition: ease-in-out 0.3s;
+    color:var(--textItems);
+}
+
+.addProjectPlus:hover{
+    background-color:var(--projPlusBg);
+    border: 3px solid  var(--projPlus);
+    color:var(--projPlus);
+}
+
+.newProjectIcon{
+    margin: 0;
+    font-weight: 600;
+    font-size: 24px;
+    transition: ease-in-out 0.4s;
+}
+
+#allProjectsDiv{
+    margin-top: 30px;
+    width: auto;
+}
+
+.container{
+    flex-grow: 1;
+    transition: margin-left 0.5s ease-out;
+    /* display: grid;
+    grid-template-rows: 120px auto; */
+    display: flex;
+    flex-direction: column;
+}
+
+#openNav{
+    position: absolute;
+    top: 25px;
+    left: 45px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 3px;
+    will-change: transform;
+    transition: ease-in-out 0.2s;
+}
+
+#openNav:hover{
+    transform: scale(110%);
+}
+
+#closeNav{
+    display: flex;
+    justify-content: end;
+    margin-bottom: 20px;
+    cursor: pointer;
+    color: var(--textItems);
+    transition: ease-in-out 0.2s;
+}
+
+#closeNav:hover{
+    color: var(--hoverNavTxt);
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.logoTxt p{
+    margin: 0;
+    font-size: 50px;
+    font-family: "Cal Sans", sans-serif;
+    color: #fff;
+}
+
+header{
+    background-color: var(--headerBg);
+    height: 120px;
+    flex-shrink: 0;
+    transition: ease-in-out 0.4s;
+}
+
+#day{
+    color: white;
+    position: absolute;
+    top: 30px;
+    right: 45px;
+    cursor: pointer;
+    will-change: transform;
+    transition: ease-in-out 0.2s;
+}
+
+#day:hover{
+    transform: scale(110%);
+}
+
+.content{
+    flex-grow: 1;
+    background-color:  var(--mainBgColor);
+    background-image: var(--mainBgImg);
+    display: flex;
+    justify-content: center;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    overflow-y: auto;
+    transition: ease-in-out 0.4s;
+}
+
+.backDiv{
+    position: relative;
+    right: 100px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeSlideUp 0.5s forwards;
+    will-change: opacity,transform;
+    color: var(--headerBg);
+}
+
+.notePlus{
+    background-color: var(--headerBg);
+    width: 80px;
+    height: 80px;
+    position: fixed;
+    top: 75%;
+    left: 85%;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 2px 1px 5px rgba(69, 67, 67, 0.615),-2px -1px 5px rgba(69, 67, 67, 0.615);
+    transition: ease 1s;
+}
+
+.notePlus p{
+    margin: 0;
+    padding: 0;
+    color: #F1F6F9;
+    font-size: 60px;
+}
+
+.notePlus:hover{
+    background-color:var(--headerBg);
+    box-shadow: var(--bShadow);
+    transform: rotate(1turn);
+}
+
+.createNoteDialog{
+    position: fixed;
+    border: none;
+    background: rgba(245, 245, 245, 0.282);
+    backdrop-filter: blur(8px);
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.createNoteDialog::backdrop{
+    background-color: rgba(0, 0, 0, 0.504);
+    backdrop-filter: blur(2px);
+}
+
+.dialogElements{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    font-family: "Cal Sans", sans-serif;
+    color: var(--textItems);
+}
+
+.dialogElements legend{
+    font-family: "Unbounded", sans-serif;
+    color:var(--textItems);
+    font-size: large;
+    font-weight: 500;
+}
+
+#noteName{
+    width: 95%;
+    font-family: "Cal Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+#newProjectTxt{
+    width: 95%;
+    font-family: "Cal Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+#noteMsg{
+    font-size: 15px;
+}
+
+#noteDate{
+    font-family: "Cal Sans", sans-serif;
+    font-size: 15px;
+}
+
+#dropDown{
+    width: 95%;
+    font-family: "Cal Sans", sans-serif;
+    font-size: 15px;
+}
+
+#noteProject{
+    width: 95%;
+    font-family: "Cal Sans", sans-serif;
+    font-size: 15px;
+}
+
+.editColor{
+    background-color: rgba(96, 94, 94, 0.297);
+    color: white;
+}
+
+.projSelectDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.twinSelect{
+    height: 25px;
+}
+
+.dialogButtons,.dialogButtonsEdit,.dialogButtonsSave,.submitProjNameDiv,.editProjNameDiv,.deleteNoteBtns,.deleteProjBtns{
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+#impHigh{
+    accent-color: red;
+}
+
+#impMed{
+    accent-color: #ffa500;
+}
+
+#impLow{
+    accent-color: #008000;
+}
+
+button{
+    width: 150px;
+    padding: 5px;
+    font-family: "Cal Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    border: 3px solid var(--textItems);
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: transparent;
+    color:var(--textItems);
+}
+
+button:hover{
+    border: 3px solid var(--hoverTxt);
+    color: var(--hoverTxt);
+}
+
+.projectDiv{
+    padding: 10px;
+    background-color:var(--projBg);
+    width: 660px;
+    border-radius: 10px;
+    box-shadow: var(--bShadowProj);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeSlideUp 0.2s forwards;
+    will-change: opacity,transform;
+    transition: ease-in-out 0.5s;
+}
+
+.allProjectsView{
+    height: 100%;
+    width: 100%;
+}
+
+.allProjectContainer{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 340px);
+    gap: 50px;
+    padding: 50px;
+}
+
+.projectFolder{
+    padding: 10px;
+    background-color: var(--projFolder);
+    border-radius: 10px;
+    box-shadow: 3px 1px 5px rgb(69, 67, 67);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeSlideUp 0.4s forwards;
+    will-change: opacity,transform;
+    transition: ease-in-out 0.2s;
+}
+
+.projectFolder:hover{
+    outline: 2px solid var(--textItems);
+}
+
+.titleContainer{
+    display: grid;
+    grid-template-columns: 350px 1fr 1fr;
+}
+
+.projectFolderTop{
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    height: 50px;
+    color: var(--textItems);
+}
+
+
+.allProjName{
+    background-color: var(--projFg);
+    padding: 3px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    transition: ease-in-out 0.4s;
+}
+
+.allProjName::after{
+    content:"";
+    position: absolute;
+    background-color: transparent;
+
+    bottom: -1px;
+    left:  220px;
+    height: 30px;
+    width: 30px;
+    border-bottom-left-radius: 10px;
+    box-shadow: -10px 0 0 0 var(--projFg);
+    transition: ease-in-out 0.4s;
+}
+
+.projNameDiv{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    text-align: left;
+    justify-content: center;
+}
+
+.projNameTxt{
+    margin: 0;
+    font-family: "Unbounded", sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    z-index: 1;
+}
+
+.projNoteBox{
+    background-color: var(--projFg);
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    transition: ease-in-out 0.4s;
+}
+
+.projNoteDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color:var(--projCircle);
+    box-shadow: 3px 1px 5px rgb(69, 67, 67);
+    transition: ease-in-out 0.3s;
+}
+
+.projNoteTxt{
+    font-family: "Unbounded", sans-serif;
+    font-size: 52px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--textItems);
+}
+
+.displayPrior{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.projPrior{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+}
+
+.colorCircle{
+    width: 20px;
+    height: 10px;
+    border-radius: 10px;
+    border: solid 2px var(--projBg);
+}
+
+.modifyProject{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 3px;
+}
+
+.delProjDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: ease-in-out 0.2s;
+    will-change: transform;
+}
+
+.delProjDiv:hover{
+    transform: scale(1.1);
+    color: var(--hoverTxt);
+}
+
+.editProjDiv{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    transition: ease-in-out 0.2s;
+    will-change: transform;
+}
+
+.editProjDiv:hover{
+    transform: scale(1.1);
+    color: var(--hoverTxt);
+}
+
+.highPrior{
+    background-color: red;
+}
+
+.medPrior{
+    background-color: orange;
+}
+
+.lowPrior{
+    background-color: green;
+}
+
+.priorTxt p{
+    margin: 0;
+    font-family: "Unbounded", sans-serif;
+}
+
+.projTitleName{
+    background-color: var(--projFg);
+    padding: 8px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    color: var(--textItems);
+    transition: ease-in-out 0.4s;
+}
+
+.projTitleName::after{
+    content:"";
+    position: absolute;
+    background-color: transparent;
+
+    bottom: -1px;
+    left: 350px;
+    height: 30px;
+    width: 90px;
+    border-bottom-left-radius: 10px;
+    box-shadow: -10px 0 0 0 var(--projFg);
+    transition: ease-in-out 0.4s;
+}
+
+.projTitleName p{
+    margin: 0;
+    font-family: "Cal Sans", sans-serif;
+}
+
+.projTitleTxt{
+    font-weight: 700;
+    font-size: 34px;
+}
+
+.impTxt{
+   font-size: 18px;
+   padding: 5px;
+}
+
+.projBox{
+    background-color: var(--projFg);
+    padding: 15px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: ease-in-out 0.4s;
+}
+
+.noteContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.projTitleCard{
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 220px 120px 115px auto;
+    font-family: "Cal Sans", sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+}
+
+.sortContainer{
+    display: grid;
+    grid-template-columns: 100px 70px;
+    align-items: center;
+    cursor: pointer;
+    gap: 15px;
+}
+
+.sortDiv{
+    display: flex;
+    align-items: center;
+    justify-self: left;
+    gap: 3px;
+    color: var(--textItems);
+    transition: ease-in-out 0.1s;
+}
+
+.sortDiv:hover{
+    color: var(--hoverNavTxt);
+}
+
+.sortIconDiv{
+    display: flex;
+    align-items: center;
+    color: var(--textItems);
+}
+
+.sortTxtDiv{
+    display: flex;
+    align-items: center;
+}
+
+.sortTxtDiv p{
+    font-size: 20px;
+}
+
+.filterTagDiv{
+    display: flex;
+    align-items: center;
+    color: var(--textItems);
+}
+
+.filter{
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    color: var(--textItems);
+    transition: ease-in-out 0.1s;
+}
+
+.filter:hover{
+    color: var(--hoverNavTxt);
+}
+
+.filterTag, .filterTxt{
+    margin: 0;
+    font-size: 20px;
+}
+
+.projTitleCard p{
+    margin: 0;
+
+}
+
+.projDisplayCard{
+    display: flex;
+    align-items: center;
+}
+
+.projDisplayCard p{
+    font-size: 28px;
+    color: var(--textItems);
+}
+
+.projDisplayDeadline{
+    justify-content: center;
+}
+
+.projTitle p{
+    margin: 0;
+    font-size: 30px;
+}
+
+.projDisplayPrior{
+    display: flex;
+}
+
+.noteBox{
+    padding: 15px;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 220px 120px 115px auto;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: var(--bShadow);
+    transition: 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeSlideUp 0.4s forwards;
+    will-change: opacity,transform;
+    color: var(--textItems);
+}
+
+@keyframes fadeSlideUp{
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+.noteBox:hover{
+    background-color: var(--projBg);
+}
+
+.noteBox::before{
+    content:"";
+    position: absolute;
+    height: 100%;
+    width: 30px;
+    background-color: #F1F6F9;
+
+    border-radius: 10px;
+    left: 8px;
+}
+
+.highImp.noteBox::before{
+    background-color: transparent;
+    box-shadow: -8px 0 0 red;
+}
+
+.medImp.noteBox::before{
+    background-color: transparent;
+    box-shadow: -8px 0 0 orange;
+}
+
+.lowImp.noteBox::before{
+    background-color: transparent;
+    box-shadow: -8px 0 0 green
+}
+
+.noteDisplay{
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: start;
+}
+
+.noteDisplay p{
+    font-family: "Inter Tight", sans-serif;
+    font-size: 18px;
+}
+
+.noteDisplayName{
+    font-weight: 600;
+    text-align: center;
+    justify-content: center;
+}
+
+.noteDisplayName p{
+    font-size: 20px;
+}
+
+.noteDisplayDeadline{
+    justify-content: center;
+}
+
+.lineThrough{
+    position: relative;
+}
+
+.lineThrough::after{
+    content: "";
+    position: absolute;
+    left: -25%;
+    top: 50%;
+    width: 0%;
+    height: 3px;
+    animation: cross 0.5s ease forwards;
+    background-color: var(--textItems);
+    transform: translateY(-50%);
+}
+
+@keyframes cross {
+    from{
+        width: 0%;
+    }
+    to{
+        width: 150%;
+    }
+}
+
+.noteDisplayBtns{
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+    align-items: center;
+}
+
+.checkBoxDiv{
+   color: var(--textItems);
+   transition: color ease 0.2s;
+}
+
+.checkBoxDiv:hover{
+    color: var(--hoverTxt);
+}
+
+.pencilDiv,.trashDiv{
+    color: var(--textItems);
+    transition: color ease 0.2s;
+}
+
+.pencilDiv:hover, .trashDiv:hover{
+    color: var(--hoverTxt);
+}
+
+.noteBox p{
+    margin: 0;
+}
+
+.previewNoteDialog{
+    width: 300px;
+    border: none;
+}
+
+.previewDialogContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.previewDialogElements{
+    display: flex;
+    gap: 30px;
+}
+
+.previewDialogElements p{
+    margin: 0;
+}
+
+.previewTitleDiv, .previewProjDiv{
+    display: flex;
+    justify-content: space-between;
+    justify-self: flex-start;
+}
+
+.previewMsgDiv{
+    gap:1px;
+    flex-direction: column;
+}
+
+.hidden{
+    display: none;
+}
